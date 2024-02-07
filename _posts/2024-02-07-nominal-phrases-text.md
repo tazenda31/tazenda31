@@ -47,6 +47,26 @@ doc = nlp(text)
 The language model knows a lot about the words and the structure of the chosen language, in our case, English. It was trained on a large corpora of English texts, so it knows which words tend to appear in what contexts and in what structures. It knows, for example, that the word _king_ often appears in similar contexts with the words _queen_ and _reign_, so it concludes that these words somehow belong together. (It knows about almost all the other words too.) For the words it does not know, it uses its knowledge about the syntax: If an unknown word appears at a specific position in a sentence, then it must be of this or that morphological category. And if it appears along some words belonging to a specific semantic category, it must be a part of the same semantic category. The models makes inferences, just like we humans do. (Do you know about the [Wug](https://www.oxfordreference.com/display/10.1093/oi/authority.20110803125127433) experiment? It's a cute psycholinguistic experiment where little humans do this very same kind of inferences like language models.)
 
 The preparations for this simple analysis are done, so let's make our first analysis!
+
+```python
+# How to see the morphological information about every word in the doc:
+
+for token in doc:
+    print(token.text, token.pos_, token.dep_, token.morph)
+```
+My PRON poss Number=Sing|Person=1|Poss=Yes|PronType=Prs
+younger ADJ amod Degree=Cmp
+daughter NOUN nsubj Number=Sing
+says VERB ROOT Number=Sing|Person=3|Tense=Pres|VerbForm=Fin
+her PRON poss Gender=Fem|Number=Sing|Person=3|Poss=Yes|PronType=Prs
+dog NOUN nsubj Number=Sing
+is AUX ccomp Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin
+cute ADJ acomp Degree=Pos
+. PUNCT punct PunctType=Peri
+
+Then we want to search for words with some specific morphological features.
+We want to find all the words that can be in singular (nouns, pronouns, adjectives, verbs), and among them, personal pronouns.
+
 ```python
 # Check every token in our text, that is now a spacy object known as "doc", for words with "Singular" in its morphological description.
 # Clearly, only words for which number (Singular or Plural) is relevant will be found. When you find them, find only Personal Pronouns among them:
@@ -62,3 +82,66 @@ Token: My, Morph: Number=Sing|Person=1|Poss=Yes|PronType=Prs
 Token: her, Morph: Gender=Fem|Number=Sing|Person=3|Poss=Yes|PronType=Prs
 
 
+And finally, let's look for some nominal phrases
+
+```python
+# Find nominal phrases
+nominal_phrases = []
+for token in doc:
+    if token.pos_ == "NOUN":
+        phrase = [t.text for t in token.subtree]
+        nominal_phrases.append(" ".join(phrase))
+
+print("Nominal Phrases:", nominal_phrases)
+```
+The result we get is Nominal Phrases: ['My younger daughter', 'her dog']
+
+How many did we find?
+
+```python
+# Count the nominal phrases
+num_nominal_phrases = len(nominal_phrases)
+
+print("Nominal Phrases:", nominal_phrases)
+print("Number of Nominal Phrases:", num_nominal_phrases)
+```
+Result: 
+Nominal Phrases: ['My younger daughter', 'her dog']
+Number of Nominal Phrases: 2
+
+
+```python
+# Function to extract and analyze dependent tokens for a nominal phrase
+def analyze_nominal_phrases(doc):
+    nominal_phrases_info = []
+
+    for token in doc:
+        if token.pos_ == "NOUN":
+            phrase = [t for t in token.subtree]
+            phrase_text = " ".join(t.text for t in phrase)
+
+            # Analyze dependent tokens
+            dep_info = [(t.text, t.pos_, t.dep_, "left" if t.i < token.i else "right") for t in phrase if t != token]
+
+            nominal_phrases_info.append({
+                "phrase_text": phrase_text,
+                "head_token_pos": token.pos_,
+                "head_token_dep": token.dep_,
+                "dependent_tokens_info": dep_info
+            })
+
+    return nominal_phrases_info
+
+# Extract and analyze nominal phrases
+nominal_phrases_info = analyze_nominal_phrases(doc)
+
+# Print the results
+for info in nominal_phrases_info:
+    print("Nominal Phrase:", info["phrase_text"])
+    print("Head Token POS:", info["head_token_pos"])
+    print("Head Token DEP:", info["head_token_dep"])
+    print("Dependent Tokens Info:")
+    for token_info in info["dependent_tokens_info"]:
+        print(f"- Token: {token_info[0]}, POS: {token_info[1]}, DEP: {token_info[2]}, Position: {token_info[3]}")
+    print()
+```
