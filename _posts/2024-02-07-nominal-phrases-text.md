@@ -45,3 +45,20 @@ doc = nlp(text)
 ```
 
 The language model knows a lot about the words and the structure of the chosen language, in our case, English. It was trained on a large corpora of English texts, so it knows which words tend to appear in what contexts and in what structures. It knows, for example, that the word _king_ often appears in similar contexts with the words _queen_ and _reign_, so it concludes that these words somehow belong together. (It knows about almost all the other words too.) For the words it does not know, it uses its knowledge about the syntax: If an unknown word appears at a specific position in a sentence, then it must be of this or that morphological category. And if it appears along some words belonging to a specific semantic category, it must be a part of the same semantic category. The models makes inferences, just like we humans do. (Do you know about the [Wug](https://www.oxfordreference.com/display/10.1093/oi/authority.20110803125127433) experiment? It's a cute psycholinguistic experiment where little humans do this very same kind of inferences like language models.)
+
+The preparations for this simple analysis are done, so let's make our first analysis!
+```python
+# Check every token in our text, that is now a spacy object known as "doc", for words with "Singular" in its morphological description.
+# Clearly, only words for which number (Singular or Plural) is relevant will be found. When you find them, find only Personal Pronouns among them:
+for token in doc:
+    if "Number=Sing" in str(token.morph):
+        if "PronType=Prs" in str(token.morph):
+            print(f"Token: {token.text}, Morph: {token.morph}")
+```
+We get the following result:
+
+Token: My, Morph: Number=Sing|Person=1|Poss=Yes|PronType=Prs
+
+Token: her, Morph: Gender=Fem|Number=Sing|Person=3|Poss=Yes|PronType=Prs
+
+
