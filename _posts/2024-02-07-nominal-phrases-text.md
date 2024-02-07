@@ -29,3 +29,19 @@ In summary, analysing morphosyntactic features of nominal phrases enhances our u
 
 ### Analysis
 The package we will be using for linguistic analysis is [spaCy](https://spacy.io) - an open-source software library for advanced natural language processing.
+
+```python
+# First we need to import our package
+import spacy
+
+# Then we need to load the language model
+nlp = spacy.load("en_core_web_sm")
+
+# After that, we need to define the text we're going to work on:
+text = "My youngest daughter says she has a cute dog."
+
+# Lastly, we apply the model's knowledge to our text. This is done using the following line of code:
+doc = nlp(text)
+
+
+The language model knows a lot about the words and the structure of the chosen language, in our case, English.
