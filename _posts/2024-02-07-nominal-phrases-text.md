@@ -27,14 +27,14 @@ Sometimes we make drawings of phrases, or whole sentences, to better understand 
 
 In summary, analysing morphosyntactic features of nominal phrases enhances our understanding of language structure and meaning, benefiting various fields such as NLP, linguistic data analysis, language learning, and literary analysis.
 
-### Analysis
-The package we will be using for linguistic analysis is [spaCy](https://spacy.io) - an open-source software library for advanced natural language processing.
+### Analysis, with additional explanations of code for linguists
+The package we will be using for linguistic analysis is [spaCy](https://spacy.io) - an open-source software library for advanced natural language processing. So, let's start writing in an editor of your choice. (I will publish a non-coder-friendly post about editors and EDIs a bit later.)
 
 ```python
-# First we need to import our package
+# First we need to import our package:
 import spacy
 
-# Then we need to load the language model
+# Then we need to load a language model. In our case, it will be a small model for English:
 nlp = spacy.load("en_core_web_sm")
 
 # After that, we need to define the text we're going to work on:
@@ -42,6 +42,6 @@ text = "My youngest daughter says she has a cute dog."
 
 # Lastly, we apply the model's knowledge to our text. This is done using the following line of code:
 doc = nlp(text)
+```
 
-
-The language model knows a lot about the words and the structure of the chosen language, in our case, English.
+The language model knows a lot about the words and the structure of the chosen language, in our case, English. It was trained on a large corpora of English texts, so it knows which words tend to appear in what contexts and in what structures. It knows, for example, that the word _king_ often appears in similar contexts with the words _queen_ and _reign_, so it concludes that these words somehow belong together. (It knows about almost all the other words too.) For the words it does not know, it uses its knowledge about the syntax: If an unknown word appears at a specific position in a sentence, then it must be of this or that morphological category. And if it appears along some words belonging to a specific semantic category, it must be a part of the same semantic category. The models makes inferences, just like we humans do. (Do you know about the [Wug](https://www.oxfordreference.com/display/10.1093/oi/authority.20110803125127433) experiment? It's a cute psycholinguistic experiment where little humans do this very same kind of inferences like language models.)
