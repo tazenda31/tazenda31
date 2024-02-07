@@ -145,3 +145,15 @@ for info in nominal_phrases_info:
         print(f"- Token: {token_info[0]}, POS: {token_info[1]}, DEP: {token_info[2]}, Position: {token_info[3]}")
     print()
 ```
+Nominal Phrase: My younger daughter
+Head Token POS: NOUN
+Head Token DEP: nsubj
+Dependent Tokens Info:
+- Token: My, POS: PRON, DEP: poss, Position: left
+- Token: younger, POS: ADJ, DEP: amod, Position: left
+
+Nominal Phrase: her dog
+Head Token POS: NOUN
+Head Token DEP: nsubj
+Dependent Tokens Info:
+- Token: her, POS: PRON, DEP: poss, Position: left
