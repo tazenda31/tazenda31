@@ -25,7 +25,7 @@ Sometimes we make drawings of phrases, or whole sentences, to better understand 
 5. *NLP Applications*: Morphosyntactic analysis is essential in NLP for tasks such as tagging parts of speech, recognizing named entities, and understanding sentiment. This analysis provides valuable data for training NLP models.
 6. *Stylistic and Literary Analysis*: In literary texts, examining these features helps uncover patterns, themes, and stylistic devices used by authors, enriching literary analysis. Additionally, if we understand stylistic habits of an author, it can be one of the parts of their stylistic signature, helpful for contributing the authorship.
 
-In summary, analysing morphosyntactic features of nominal phrases enhances our understanding of language structure and meaning, benefiting various fields such as NLP, linguistic data analysis, language learning, and literary analysis.
+Analysing morphosyntactic features of nominal phrases enables us to understand language structure and meaning. It can be put to good use in various fields such as NLP, linguistic data analysis, language learning, and literary analysis.
 
 ### Analysis, with additional explanations of code for linguists
 The package we will be using for linguistic analysis is [spaCy](https://spacy.io) - an open-source software library for advanced natural language processing. So, let's start writing in an editor of your choice. (I will publish a non-coder-friendly post about editors and EDIs a bit later.)
@@ -64,7 +64,7 @@ is AUX ccomp Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin
 cute ADJ acomp Degree=Pos
 . PUNCT punct PunctType=Peri
 
-Then we want to search for words with some specific morphological features.
+Next, we want to find words with some specific morphological features.
 We want to find all the words that can be in singular (nouns, pronouns, adjectives, verbs), and among them, personal pronouns.
 
 ```python
