@@ -10,11 +10,11 @@ _The shop is a movie._
 
 _*The horrors is a movie._ 
 
-The first sentence, although it lacks important semantic information, is still grammatically correct. The second one is not. Therefore, we conclude that the noun _shop_ is the head of the phrase.
+The first sentence, although it makes no real sense, is still grammatically correct. The second one is not - it is grammatically impossible. Therefore, we conclude that the noun _shop_ is the head of the phrase.
 
 Furthermore, everything that describes the head in any way belongs into the same nominal phrase: _The… shop_, _little shop_, _shop of horrors_. Some of these elements depend directly on the head, others depend on the elements that themselves depend on the head.
 
-Sometimes we make drawings of phrases, or whole sentences, to better understand the structure.
+Sometimes we make drawings of phrases, or whole sentences, to better understand the structure. (More about visualisations in one of the following posts.)
 
 ### Why would we want to know the structure of nominal phrases in language data?
 
@@ -68,8 +68,10 @@ Then we want to search for words with some specific morphological features.
 We want to find all the words that can be in singular (nouns, pronouns, adjectives, verbs), and among them, personal pronouns.
 
 ```python
-# Check every token in our text, that is now a spacy object known as "doc", for words with "Singular" in its morphological description.
-# Clearly, only words for which number (Singular or Plural) is relevant will be found. When you find them, find only Personal Pronouns among them:
+# Check every token in our text, that is now a spacy object known as "doc",
+# for words with "Singular" in its morphological description.
+# Clearly, only words for which number (Singular or Plural) is relevant will be found.
+# When you find them, find only Personal Pronouns among them:
 for token in doc:
     if "Number=Sing" in str(token.morph):
         if "PronType=Prs" in str(token.morph):
@@ -82,11 +84,13 @@ Token: My, Morph: Number=Sing|Person=1|Poss=Yes|PronType=Prs
 Token: her, Morph: Gender=Fem|Number=Sing|Person=3|Poss=Yes|PronType=Prs
 
 
-And finally, let's look for some nominal phrases
+And finally, let's look for some nominal phrases:
 
 ```python
-# Find nominal phrases
+# Find nominal phrases. Initialise an empty list where you'll store the phrases.
 nominal_phrases = []
+# For every token in text that is a noun, check whether it has some dependent elements (a subtree).
+# When done, join the elements of the phrase together and add them to the list you named "nominal_phrases".
 for token in doc:
     if token.pos_ == "NOUN":
         phrase = [t.text for t in token.subtree]
@@ -94,9 +98,9 @@ for token in doc:
 
 print("Nominal Phrases:", nominal_phrases)
 ```
-The result we get is Nominal Phrases: ['My younger daughter', 'her dog']
+The result we get is: Nominal Phrases: ['My younger daughter', 'her dog']
 
-How many did we find?
+How many of them did we find?
 
 ```python
 # Count the nominal phrases
@@ -106,9 +110,13 @@ print("Nominal Phrases:", nominal_phrases)
 print("Number of Nominal Phrases:", num_nominal_phrases)
 ```
 Result: 
+
 Nominal Phrases: ['My younger daughter', 'her dog']
+
 Number of Nominal Phrases: 2
 
+
+And finally, we want to know the structure of the phrase - what is left and what is right from the head.
 
 ```python
 # Function to extract and analyze dependent tokens for a nominal phrase
@@ -125,6 +133,7 @@ def analyze_nominal_phrases(doc):
 
             nominal_phrases_info.append({
                 "phrase_text": phrase_text,
+                "head_token_text": token.text,
                 "head_token_pos": token.pos_,
                 "head_token_dep": token.dep_,
                 "dependent_tokens_info": dep_info
@@ -138,6 +147,7 @@ nominal_phrases_info = analyze_nominal_phrases(doc)
 # Print the results
 for info in nominal_phrases_info:
     print("Nominal Phrase:", info["phrase_text"])
+    print("Head Token Text:", info["head_token_text"])
     print("Head Token POS:", info["head_token_pos"])
     print("Head Token DEP:", info["head_token_dep"])
     print("Dependent Tokens Info:")
@@ -146,14 +156,26 @@ for info in nominal_phrases_info:
     print()
 ```
 Nominal Phrase: My younger daughter
+
+Head Token Text: daughter
+
 Head Token POS: NOUN
+
 Head Token DEP: nsubj
+
 Dependent Tokens Info:
+
 - Token: My, POS: PRON, DEP: poss, Position: left
 - Token: younger, POS: ADJ, DEP: amod, Position: left
 
 Nominal Phrase: her dog
+
+Head Token Text: dog
+
 Head Token POS: NOUN
+
 Head Token DEP: nsubj
+
 Dependent Tokens Info:
+
 - Token: her, POS: PRON, DEP: poss, Position: left
