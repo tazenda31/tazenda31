@@ -116,11 +116,11 @@ Nominal Phrases: ['My younger daughter', 'her dog']
 Number of Nominal Phrases: 2
 
 
-And finally, we want to know the structure of the phrase - what is left and what is right from the head.
+And finally, we want to analyse the structure of the phrase - what is left and what is right from the head.
 
 ```python
-# Function to extract and analyze dependent tokens for a nominal phrase
-def analyze_nominal_phrases(doc):
+# This is a function to extract and analyse dependent tokens for a nominal phrase
+def analyse_nominal_phrases(doc):
     nominal_phrases_info = []
 
     for token in doc:
@@ -128,7 +128,7 @@ def analyze_nominal_phrases(doc):
             phrase = [t for t in token.subtree]
             phrase_text = " ".join(t.text for t in phrase)
 
-            # Analyze dependent tokens
+            # Analyse dependent tokens
             dep_info = [(t.text, t.pos_, t.dep_, "left" if t.i < token.i else "right") for t in phrase if t != token]
 
             nominal_phrases_info.append({
@@ -141,8 +141,8 @@ def analyze_nominal_phrases(doc):
 
     return nominal_phrases_info
 
-# Extract and analyze nominal phrases
-nominal_phrases_info = analyze_nominal_phrases(doc)
+# Extract and analyse nominal phrases
+nominal_phrases_info = analyse_nominal_phrases(doc)
 
 # Print the results
 for info in nominal_phrases_info:
