@@ -1,9 +1,8 @@
-#Basic psycholinguistic measures: Type-token frequency
+# Basic psycholinguistic measures: Type-token frequency
+The analysed text was published on Daily Echo website on 27/01/2024.
+https://www.dailyecho.co.uk/news/24076400.winchester-armed-police-confront-men-dressed-cowboys-filming-video/
 
 ```python
-# The analysed text was published on Daily Echo website on 27/01/2024.
-# https://www.dailyecho.co.uk/news/24076400.winchester-armed-police-confront-men-dressed-cowboys-filming-video/
-
 
 import spacy
 
